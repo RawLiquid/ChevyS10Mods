@@ -56,6 +56,7 @@ void setup();
 void loop();
 
 
+bool needBTConfig = false;
 bool connRC = true;
 bool connBT = false;
 bool inputRC = true;
@@ -487,6 +488,126 @@ void exeCmd() {
 
 void setup() {
   setSyncProvider(getTeensy3Time);
+  if (needBTConfig == true) {
+    SerialUSB.begin(115200);
+    Serial2.begin(115200);
+       Serial2.print("\rrestore\r");
+    Serial2.begin(9600);
+delay(10000);
+if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+       Serial2.print("\rrestore\r");
+if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+    delay(2000);
+ 
+    Serial2.print("\rset usb_host=off\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set audio=0\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set name=Chevy_S10_Radio\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set name_short=S10\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set audio_analog=15 15 0 OFF\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set autoconn=0\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set BT_VOL_CONFIG=F E F\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set CONN_TO=0\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set discoverable=1 0\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set ENABLE_BATT_IND=OFF\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+    Serial2.print("set gpio_config=OFF 0 0\rset profiles=0 0 3 0 3 1 1 0 0 0 0 0\r");
+ delay(2000);
+ if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+  SerialUSB.println("");
+    Serial2.print("set uart_config=115200 on 0\r");
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+    Serial2.print("write\r");
+    delay(2000);
+    Serial2.print("reset\r");
+    delay(2000);
+      if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+    delay(2000);
+  if (Serial2.available()) {
+    while (Serial2.available() > 0) {
+      SerialUSB.write(Serial2.read());
+    }
+  }
+    
+  }
+  
   setupRC();
   pinMode(ledPin, OUTPUT);
 
@@ -499,6 +620,7 @@ void setup() {
   Serial2.attachCts(23);
   delay(2000);
   Serial.println("Ready to start");  //  for(int i=0; i<chCount; i++) {
+  Serial2.print("config\r");
   cmdIndex = 0;
 }
 time_t getTeensy3Time()
@@ -581,6 +703,7 @@ void loop() {
       Serial.write(Serial2.peek());
       c = (char)Serial2.read();
       if (c == '\r') {
+        SerialUSB.println("");
         cmd[cmdIndex] = 0;
         exeCmd();  // execute the command
         cmdIndex = 0; // reset the cmdIndex
