@@ -266,8 +266,8 @@ void RCInput() {
   }
 
   if (channel2 > 900 && channel2 < 2200) {
-    if (channel2 < rcCh2[0]) rcCh2[0] = channel2;
-    if (channel2 > rcCh2[1]) rcCh2[1] = channel2;
+    //    if (channel2 < rcCh2[0]) rcCh2[0] = channel2;
+    //    if (channel2 > rcCh2[1]) rcCh2[1] = channel2;
     rcthrottleInput = map(channel2, rcCh2[0], rcCh2[1], -600, 600);
     int rcthrottlediff = rcthrottleInput - rcprevthrottleInput;
     if (abs(rcthrottlediff) > 5) {
@@ -400,6 +400,7 @@ void exeCmd() {
     inputRC = !inputRC;
     rcprevthrottleInput = lastSpeed;
     rcprevsteeringInput = lastSteering;
+
     if (Serial) Serial.println("Control swapped!");
   }
 
@@ -415,10 +416,14 @@ void exeCmd() {
     }
     lastheartbeat = millis();
     if (failsafe > 0) failsafe = 0;
-    //voltage=roboclaw.ReadMainBatteryVoltage(address);
-    //Serial2.print("volt ");
-    //Serial2.println(voltage);
+    bool *valid;
+//    voltage=roboclaw.ReadMainBatteryVoltage(address);
+//    Serial2.print("msg ");
+//    Serial2.print((String)voltage);
+//    Serial2.print("\r");
+
     Serial2.print((String)"msg " + (String)year() + "-" + (String)month() + "-" + (String)day() + " " + (String)hour() + ":" + (String)minute() + ":" + (String)second() + "\r");
+//    Serial2.print((String)"msg " + (String)rcCh1[0] + "-" + (String)rcCh1[1] + "   /   " + (String)rcCh2[0] + "-" + (String)rcCh2[1] + "\r");
     Serial2.print((String)"led1 1\rledrc " + (String)inputRC + "\rledbt " + (String)inputBT + "\r");
     Serial2.print("logch1 " + (String)lastSteering + "\rlogch2 " + (String)lastSpeed + "\r");
   }
@@ -491,123 +496,123 @@ void setup() {
   if (needBTConfig == true) {
     SerialUSB.begin(115200);
     Serial2.begin(115200);
-       Serial2.print("\rrestore\r");
+    Serial2.print("\rrestore\r");
     Serial2.begin(9600);
-delay(10000);
-if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    delay(10000);
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-       Serial2.print("\rrestore\r");
-if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    Serial2.print("\rrestore\r");
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
     delay(2000);
- 
+
     Serial2.print("\rset usb_host=off\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set audio=0\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set name=Chevy_S10_Radio\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set name_short=S10\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set audio_analog=15 15 0 OFF\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set autoconn=0\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set BT_VOL_CONFIG=F E F\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set CONN_TO=0\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set discoverable=1 0\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set ENABLE_BATT_IND=OFF\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
     Serial2.print("set gpio_config=OFF 0 0\rset profiles=0 0 3 0 3 1 1 0 0 0 0 0\r");
- delay(2000);
- if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    delay(2000);
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
-  SerialUSB.println("");
+    SerialUSB.println("");
     Serial2.print("set uart_config=115200 on 0\r");
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
     Serial2.print("write\r");
     delay(2000);
     Serial2.print("reset\r");
     delay(2000);
-      if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
-  }
     delay(2000);
-  if (Serial2.available()) {
-    while (Serial2.available() > 0) {
-      SerialUSB.write(Serial2.read());
+    if (Serial2.available()) {
+      while (Serial2.available() > 0) {
+        SerialUSB.write(Serial2.read());
+      }
     }
+
   }
-    
-  }
-  
+
   setupRC();
   pinMode(ledPin, OUTPUT);
 
