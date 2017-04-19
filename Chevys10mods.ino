@@ -20,20 +20,32 @@
   13      Yes     Onboard LED for debug visual feedback
   14
   15
-  16
-  17
-  18
-  19
-  20
-  21
+  16      Res     Steering - rotary encoder A
+  17      Res     Steering - rotary encoder B
+  18      Res     Pedal - Yellow
+  19      Res     Pedal - Black
+  20      Res     Shifter - Yellow
+  21      Res     Shifter - Black
   22      Yes     Bluetooth RTS
   23      Yes     Bluetooth CTS
 
 
+Reserved pins not currently attached, but wires are in place.
 
+Shifter - Red +5
+          Reverse - both lines low
+          Low     - Black High, Yellow Low
+          High    - Black High, Yellow High
 
+Pedal - Red +5
+          Idle    - Black High
+          pressed - Yellow High
+          Mid - both low
+
+Steering - Black ground
 
 */
+
 #include <EEPROMex.h>
 #include "Arduino.h"
 #include "RoboClaw.h"
