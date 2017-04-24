@@ -46,7 +46,7 @@ Steering - Black ground
 
 */
 
-#include <EEPROMex.h>
+//#include <EEPROMex.h>
 #include "Arduino.h"
 #include "RoboClaw.h"
 #include <TimeLib.h>
@@ -254,8 +254,9 @@ void RCInput() {
   if (debug) Serial.println(channel3);
 
   if (channel1 > 900 && channel1 < 2200) {
-    if (channel1 < rcCh1[0]) rcCh1[0] = channel1;
-    if (channel1 > rcCh1[1]) rcCh1[1] = channel1;
+    //  Removing these due to possible corruption from erronious signals
+    //if (channel1 < rcCh1[0]) rcCh1[0] = channel1;
+    //else if (channel1 > rcCh1[1]) rcCh1[1] = channel1;
     rcsteeringInput = map(channel1, rcCh1[0], rcCh1[1], 5, 3900);
 
     int rcsteeringdiff = rcsteeringInput - rcprevsteeringInput;
